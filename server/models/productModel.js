@@ -5,6 +5,7 @@ const productSchema = new mongoose.Schema(
         title: {
             type: String,
             required: true,
+            unique: true,
         },
         description: {
             type: String,
@@ -13,12 +14,6 @@ const productSchema = new mongoose.Schema(
         image: {
             type: String,
             required: true,
-            validate: {
-                validator: function(v) {
-                    return /^(http|https):\/\/[^ "]+$/.test(v);
-                },
-                message: props => `${props.value} is not a valid URL!`
-            },
         },
         category: {
             type: String,
@@ -35,6 +30,11 @@ const productSchema = new mongoose.Schema(
             required: true,
             min: 0, 
             default: 0, 
+        },
+        isActive:{
+            type: Boolean,
+            required: true,
+            default: true,
         },
     },
     {

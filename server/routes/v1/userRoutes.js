@@ -1,6 +1,7 @@
 import express from "express";
-import {signup, login, userProfile, userLogout, checkUser}  from "../../controllers/userControllers.js";
+import {signup, login, userProfile, userLogout, checkUser, updateUser, deactivateUser, getAllUsers}  from "../../controllers/userControllers.js";
 import userAuth from "../../middlewares/userAuth.js";
+import adminAuth from "../../middlewares/adminAuth.js";
 
 const userRouter = express.Router();
 
@@ -9,8 +10,9 @@ userRouter.post("/login", login);
 userRouter.get("/profile",userAuth, userProfile);
 userRouter.get("/logout", userAuth, userLogout);
 userRouter.get("/check-user", userAuth, checkUser);
-userRouter.put("/update-profile", userAuth, );
-userRouter.put("/deactivate", userAuth, );
+userRouter.put("/updateProfile", userAuth, updateUser);
+userRouter.put("/deactivateuser/:id", userAuth, deactivateUser);
+userRouter.get("/getallusers",adminAuth, getAllUsers);
 
 
 

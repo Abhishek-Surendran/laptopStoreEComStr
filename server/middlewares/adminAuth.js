@@ -1,7 +1,7 @@
 import  jwt  from "jsonwebtoken";
 
 
-const userAuth = (req, res, next) => {
+const adminAuth = (req, res, next) => {
     try {
         const token = req.cookies.token;
         if (!token) {
@@ -10,6 +10,9 @@ const userAuth = (req, res, next) => {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         if (!decoded) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+        if (decoded.role === 'user') {
             return res.status(401).json({ message: 'Unauthorized' });
         }
         
@@ -21,4 +24,4 @@ const userAuth = (req, res, next) => {
     }
 }
 
-export default userAuth
+export default adminAuth
