@@ -38,7 +38,6 @@ export const getProductDetails = async (req, res) => {
 export const createProduct = async (req, res) => {
     const { title, description, image, category, price, countInStock } = req.body;
     try {
-        console.log(req.body);
 
         if (!title || !description || !category || !price || !countInStock) {
             return res.status(400).json({ message: 'All fields are required' });
@@ -95,6 +94,23 @@ export const deactivateProduct = async (req, res) => {
     }
 }
 
+export const reactivateProduct = async (req, res) => {
+    try {
+        const productId = req.params.id;
+
+        const product = await Product.findByIdAndUpdate(productId, { isActive: true }, { new: true });
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        res.status(200).json({ message: 'Product reactivated successfully', data: product });
+    } catch (error) {
+        console.log(error);
+        res.status(error.status || 500).json({ message: error.message || 'Internal server error' });
+    }
+}
+
 export const aGetProductDetails = async (req, res) => {
     try {
         const productId = req.params.id;
@@ -114,7 +130,7 @@ export const aGetProductDetails = async (req, res) => {
 
 export const aGetAllProducts = async (req, res) => {
     try {
-        const productList = await Product.find().select('title image price')
+        const productList = await Product.find().select('title image price isActive')
 
         if (productList.length === 0) {
             return res.status(404).json({ message: 'No products found' });

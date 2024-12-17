@@ -2,20 +2,21 @@ import mongoose from "mongoose";
 
 const cartSchema = new mongoose.Schema(
     {
-        user: {
+        userId: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
             ref: "User",
+            unique: true,
         },
         cartItems: [
             {
-                product: {
+                productId: {
                     type: mongoose.Schema.Types.ObjectId,
                     required: true,
                     ref: "Product",
                 },
-                qty: { type: Number, required: true, default: 1 },
-                price: { type: Number, required: true, default: 0 },
+                qty: { type: Number, required: true, default: 0, min: 0 },
+                price: { type: Number, required: true, default: 0, min: 0 },
             },
         ],
         totalPrice: {
@@ -26,6 +27,14 @@ const cartSchema = new mongoose.Schema(
         },
     },
     { timestamps: true }
-);
+); 
+
+cartSchema.methods = {
+    async calculateTotalPrice() {
+        const totalPrice = this.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
+        this.totalPrice = totalPrice;
+        await this.save();
+    },
+};
 
 export const Cart = mongoose.model("Cart", cartSchema);

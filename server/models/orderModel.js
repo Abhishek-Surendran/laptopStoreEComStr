@@ -14,8 +14,8 @@ const orderSchema = new mongoose.Schema(
                     required: true,
                     ref: "Product",
                 },
-                qty: { type: Number, required: true, default: 1 },
-                price: { type: Number, required: true, default: 0 },
+                qty: { type: Number, required: true, default: 0, min: 0 },
+                price: { type: Number, required: true, default: 0, min: 0 },
             },
         ],
         shippingAddress: {
@@ -25,7 +25,7 @@ const orderSchema = new mongoose.Schema(
         OrderStatus: {
             type: String,
             required: true,
-            enum: ["Payment Confirmed", "In Transit", "Delivered", "Rejected"], 
+            enum: ["Payment Confirmed", "In Transit", "Delivered", "Rejected", "Payment processing"], 
             default: "Payment Confirmed",
         },
         totalPrice: {
@@ -39,5 +39,13 @@ const orderSchema = new mongoose.Schema(
         timestamps: true,
     }
 );
+
+orderSchema.methods = {
+    async calculateTotalPrice() {
+        const totalPrice = this.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0);
+        this.totalPrice = totalPrice;
+        await this.save();
+    },
+};
 
 export const Order = mongoose.model("Order", orderSchema);
