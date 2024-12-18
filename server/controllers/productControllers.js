@@ -15,7 +15,6 @@ export const getAllProducts = async (req, res) => {
       .status(200)
       .json({ message: "Products fetched successfully", data: productList });
   } catch (error) {
-    console.log(error);
     res
       .status(error.status || 500)
       .json({ message: error.message || "Internal server error" });
@@ -36,7 +35,6 @@ export const getProductDetails = async (req, res) => {
       .status(200)
       .json({ message: "Products fetched successfully", data: product });
   } catch (error) {
-    console.log(error);
     res
       .status(error.status || 500)
       .json({ message: error.message || "Internal server error" });
@@ -75,7 +73,6 @@ export const createProduct = async (req, res) => {
       .status(201)
       .json({ message: "Product created successfully", data: product });
   } catch (error) {
-    console.log(error);
     res
       .status(error.status || 500)
       .json({ message: error.message || "Internal server error" });
@@ -96,7 +93,6 @@ export const updateProduct = async (req, res) => {
       .status(200)
       .json({ message: "Product updated successfully", data: product });
   } catch (error) {
-    console.log(error);
     res
       .status(error.status || 500)
       .json({ message: error.message || "Internal server error" });
@@ -121,7 +117,6 @@ export const deactivateProduct = async (req, res) => {
       .status(200)
       .json({ message: "Product deactivated successfully", data: product });
   } catch (error) {
-    console.log(error);
     res
       .status(error.status || 500)
       .json({ message: error.message || "Internal server error" });
@@ -146,7 +141,6 @@ export const reactivateProduct = async (req, res) => {
       .status(200)
       .json({ message: "Product reactivated successfully", data: product });
   } catch (error) {
-    console.log(error);
     res
       .status(error.status || 500)
       .json({ message: error.message || "Internal server error" });
@@ -167,7 +161,6 @@ export const aGetProductDetails = async (req, res) => {
       .status(200)
       .json({ message: "Products fetched successfully", data: product });
   } catch (error) {
-    console.log(error);
     res
       .status(error.status || 500)
       .json({ message: error.message || "Internal server error" });
@@ -188,7 +181,6 @@ export const aGetAllProducts = async (req, res) => {
       .status(200)
       .json({ message: "Products fetched successfully", data: productList });
   } catch (error) {
-    console.log(error);
     res
       .status(error.status || 500)
       .json({ message: error.message || "Internal server error" });

@@ -72,6 +72,10 @@ export const deleteProductFromCart = async (req, res) => {
     const userId = req.user.id;
     const { productId } = req.body;
 
+    if (!productId) {
+      return res.status(400).json({ message: "Product ID is required" });
+    }
+
     let cart = await Cart.findOne({ userId });
     if (!cart) {
       return res.status(404).json({ message: "Cart not found" });
