@@ -1,6 +1,5 @@
 import Review from "../models/reviewModel.js";
-import { Product } from "../models/productModel.js";
-import { User } from "../models/userModel.js";
+import Product from "../models/productModel.js";
 
 export const addReview = async (req, res) => {
   try {
@@ -37,16 +36,19 @@ export const getProductReviews = async (req, res) => {
     const { productId } = req.body;
 
     const reviews = await Review.find({ productId })
-      .populate("userId")
+      .populate({
+        path: "userId",
+        select: "name",
+      })
       .sort({ createdAt: -1 });
 
     if (!reviews.length) {
       return res
         .status(404)
-        .json({ message: "No reviews found for this course" });
+        .json({ message: "No reviews found for this product" });
     }
 
-    res.status(200).json({ message: "course reviews fetched", data: reviews });
+    res.status(200).json({ message: "Product reviews fetched", data: reviews });
   } catch (error) {
     res
       .status(error.status || 500)
@@ -83,7 +85,7 @@ export const getAverageRating = async (req, res) => {
     if (!reviews.length) {
       return res
         .status(404)
-        .json({ message: "No reviews found for this course" });
+        .json({ message: "No reviews found for this product" });
     }
 
     const averageRating =
